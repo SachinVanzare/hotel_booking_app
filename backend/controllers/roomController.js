@@ -7,7 +7,7 @@ const ApiError = require('../utils/ApiError');
 exports.getRooms = expressAsyncHandler(async (req, res) => {
         const hotelId = req.params.hotelId;
 
-        if(!hotelId == Room.hotelId) throw new ApiError(400, 'Hotel ID required');
+        if(!hotelId) throw new ApiError(400, 'Hotel ID required');
 
         // Check if hotel exists
         const hotel = await Hotel.findById(hotelId);
