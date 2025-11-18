@@ -5,17 +5,15 @@ const errorHandler = require('./middleware/errorHandler');
 const nodeCron = require('node-cron');
 const Booking = require('./models/Booking');
 const Room = require('./models/Room');
-const { default: helmet } = require('helmet');
-const { default: rateLimit } = require('express-rate-limit');
+const  helmet = require('helmet');
+const  rateLimit = require('express-rate-limit');
 const { errors } = require('celebrate');
 
 const app = express();
 
 // Middleware
 app.use(cors({
-   origin: [
-    "http://localhost:3000",
-  ],
+   origin:"http://localhost:3000",
   credentials: true
  }));  // Enable CORS for frontend communication
 app.use(express.json());    // Parse JSON bodies
@@ -46,6 +44,7 @@ const authLimiter = rateLimit({
   }
 });
 // Routes
+app.get("/", (req, res) => res.send("Hotel Booking API running ✅"));
 app.use('/api/admin', require('./routes/adminRoutes')); // All admin routes for where admin permission required 
 app.use('/api/auth',authLimiter , require('./routes/authRoutes'));  // Authentication routes
 app.use('/api/users', require('./routes/userRoutes')); // User routes
@@ -53,7 +52,7 @@ app.use('/api/hotels', require('./routes/hotelRoutes'));  // Hotel routes
 app.use('/api/rooms', require('./routes/roomRoutes'));  // Room routes
 app.use('/api/bookings', require('./routes/bookingRoutes'));  // Booking routes
 
-app.use(errors);
+app.use(errors());
 
 // Catch-all route for unmatched requests
 app.use((req, res) => {
